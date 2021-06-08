@@ -1,12 +1,7 @@
 {
-    "TPSCode": "...",
-    "Title": "...",
-    "CoverSheetIncluded": "...",
-    "DueDate": "...",
-    "ApprovalDate": "...",
-    "Memo": "...",
-    "SecondCopyOfMemo": "...",
-    "TestCode": "...",
-    "Authors": "...",
-    "Tags": "..."
+    "ServiceUsername": "rzrobert",
+    "ServiceAppPassword": "123456qwerty",
+    "Workspace": "rzrobert",
+    "Repository": "session-service",
+    "WebhookUrl": "google.com"
 }
