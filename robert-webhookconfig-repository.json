@@ -2,110 +2,55 @@
     "typeName": "Robert::WebhookConfig::Repository",
     "description": "An example resource schema demonstrating some basic constructs and validation rules.",
     "sourceUrl": "https://github.com/aws-cloudformation/aws-cloudformation-rpdk.git",
-    "definitions": {
-        "InitechDateFormat": {
-            "$comment": "Use the `definitions` block to provide shared resource property schemas",
-            "type": "string",
-            "format": "date-time"
-        },
-        "Memo": {
-            "type": "object",
-            "properties": {
-                "Heading": {
-                    "type": "string"
-                },
-                "Body": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": false
-        },
-        "Tag": {
-            "description": "A key-value pair to associate with a resource.",
-            "type": "object",
-            "properties": {
-                "Key": {
-                    "type": "string",
-                    "description": "The key name of the tag. You can specify a value that is 1 to 128 Unicode characters in length and cannot be prefixed with aws:. You can use any of the following characters: the set of Unicode letters, digits, whitespace, _, ., /, =, +, and -.",
-                    "minLength": 1,
-                    "maxLength": 128
-                },
-                "Value": {
-                    "type": "string",
-                    "description": "The value for the tag. You can specify a value that is 0 to 256 Unicode characters in length and cannot be prefixed with aws:. You can use any of the following characters: the set of Unicode letters, digits, whitespace, _, ., /, =, +, and -.",
-                    "minLength": 0,
-                    "maxLength": 256
-                }
-            },
-            "required": [
-                "Key",
-                "Value"
-            ],
-            "additionalProperties": false
-        }
-    },
+    "definitions": { },
     "properties": {
-        "TPSCode": {
-            "description": "A TPS Code is automatically generated on creation and assigned as the unique identifier.",
+        "Id": {
+            "description": "The id of the resource.",
             "type": "string",
-            "pattern": "^[A-Z]{3,5}[0-9]{8}-[0-9]{4}$"
+            "minLength": 1
         },
-        "Title": {
-            "description": "The title of the TPS report is a mandatory element.",
+        "ServiceUsername": {
+            "description": "Bitbucket service username.",
             "type": "string",
-            "minLength": 20,
-            "maxLength": 250
+            "minLength": 1
         },
-        "CoverSheetIncluded": {
-            "description": "Required for all TPS Reports submitted after 2/19/1999",
-            "type": "boolean"
-        },
-        "DueDate": {
-            "$ref": "#/definitions/InitechDateFormat"
-        },
-        "ApprovalDate": {
-            "$ref": "#/definitions/InitechDateFormat"
-        },
-        "Memo": {
-            "$ref": "#/definitions/Memo"
-        },
-        "SecondCopyOfMemo": {
-            "description": "In case you didn't get the first one.",
-            "$ref": "#/definitions/Memo"
-        },
-        "TestCode": {
+        "ServiceAppPassword": {
+            "description": "Bitbucket app password.",
             "type": "string",
-            "enum": [
-                "NOT_STARTED",
-                "CANCELLED"
-            ]
+            "minLength": 1
         },
-        "Authors": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
+        "Workspace": {
+            "description": "Bitbucket workspace slug in which the repository is located.",
+            "type": "string",
+            "minLength": 1
         },
-        "Tags": {
-            "description": "An array of key-value pairs to apply to this resource.",
-            "type": "array",
-            "uniqueItems": true,
-            "insertionOrder": false,
-            "items": {
-                "$ref": "#/definitions/Tag"
-            }
+        "Repository": {
+            "description": "Repository slug for which the webhook needs to be configured.",
+            "type": "string",
+            "minLength": 1
+        },
+        "WebhookUrl": {
+            "description": "The url to call when an event is triggered.",
+            "type": "string",
+            "minLength": 1
         }
     },
     "additionalProperties": false,
     "required": [
-        "TestCode",
-        "Title"
+        "ServiceUsername",
+        "ServiceAppPassword",
+        "Workspace",
+        "Repository",
+        "WebhookUrl"
+    ],
+    "createOnlyProperties": [
+        "/properties/Id"
     ],
     "readOnlyProperties": [
-        "/properties/TPSCode"
+        "/properties/Id"
     ],
     "primaryIdentifier": [
-        "/properties/TPSCode"
+        "/properties/Id"
     ],
     "handlers": {
         "create": {

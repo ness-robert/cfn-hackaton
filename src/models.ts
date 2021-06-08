@@ -9,92 +9,68 @@ export class ResourceModel extends BaseModel {
     public static readonly TYPE_NAME: string = 'Robert::WebhookConfig::Repository';
 
     @Exclude()
-    protected readonly IDENTIFIER_KEY_TPSCODE: string = '/properties/TPSCode';
+    protected readonly IDENTIFIER_KEY_ID: string = '/properties/Id';
 
-    @Expose({ name: 'TPSCode' })
+    @Expose({ name: 'Id' })
     @Transform(
         (value: any, obj: any) =>
-            transformValue(String, 'tPSCode', value, obj, []),
+            transformValue(String, 'id', value, obj, []),
         {
             toClassOnly: true,
         }
     )
-    tPSCode?: Optional<string>;
-    @Expose({ name: 'Title' })
+    id?: Optional<string>;
+    @Expose({ name: 'ServiceUsername' })
     @Transform(
         (value: any, obj: any) =>
-            transformValue(String, 'title', value, obj, []),
+            transformValue(String, 'serviceUsername', value, obj, []),
         {
             toClassOnly: true,
         }
     )
-    title?: Optional<string>;
-    @Expose({ name: 'CoverSheetIncluded' })
+    serviceUsername?: Optional<string>;
+    @Expose({ name: 'ServiceAppPassword' })
     @Transform(
         (value: any, obj: any) =>
-            transformValue(Boolean, 'coverSheetIncluded', value, obj, []),
+            transformValue(String, 'serviceAppPassword', value, obj, []),
         {
             toClassOnly: true,
         }
     )
-    coverSheetIncluded?: Optional<boolean>;
-    @Expose({ name: 'DueDate' })
+    serviceAppPassword?: Optional<string>;
+    @Expose({ name: 'Workspace' })
     @Transform(
         (value: any, obj: any) =>
-            transformValue(String, 'dueDate', value, obj, []),
+            transformValue(String, 'workspace', value, obj, []),
         {
             toClassOnly: true,
         }
     )
-    dueDate?: Optional<string>;
-    @Expose({ name: 'ApprovalDate' })
+    workspace?: Optional<string>;
+    @Expose({ name: 'Repository' })
     @Transform(
         (value: any, obj: any) =>
-            transformValue(String, 'approvalDate', value, obj, []),
+            transformValue(String, 'repository', value, obj, []),
         {
             toClassOnly: true,
         }
     )
-    approvalDate?: Optional<string>;
-    @Expose({ name: 'Memo' })
-    @Type(() => Memo)
-    memo?: Optional<Memo>;
-    @Expose({ name: 'SecondCopyOfMemo' })
-    @Type(() => Memo)
-    secondCopyOfMemo?: Optional<Memo>;
-    @Expose({ name: 'TestCode' })
+    repository?: Optional<string>;
+    @Expose({ name: 'WebhookUrl' })
     @Transform(
         (value: any, obj: any) =>
-            transformValue(String, 'testCode', value, obj, []),
+            transformValue(String, 'webhookUrl', value, obj, []),
         {
             toClassOnly: true,
         }
     )
-    testCode?: Optional<string>;
-    @Expose({ name: 'Authors' })
-    @Transform(
-        (value: any, obj: any) =>
-            transformValue(String, 'authors', value, obj, [Array]),
-        {
-            toClassOnly: true,
-        }
-    )
-    authors?: Optional<Array<string>>;
-    @Expose({ name: 'Tags' })
-    @Transform(
-        (value: any, obj: any) =>
-            transformValue(Tag, 'tags', value, obj, [Set]),
-        {
-            toClassOnly: true,
-        }
-    )
-    tags?: Optional<Set<Tag>>;
+    webhookUrl?: Optional<string>;
 
     @Exclude()
     public getPrimaryIdentifier(): Dict {
         const identifier: Dict = {};
-        if (this.tPSCode != null) {
-            identifier[this.IDENTIFIER_KEY_TPSCODE] = this.tPSCode;
+        if (this.id != null) {
+            identifier[this.IDENTIFIER_KEY_ID] = this.id;
         }
 
         // only return the identifier if it can be used, i.e. if all components are present
@@ -107,55 +83,5 @@ export class ResourceModel extends BaseModel {
         // only return the identifiers if any can be used
         return identifiers.length === 0 ? null : identifiers;
     }
-}
-
-export class Memo extends BaseModel {
-    ['constructor']: typeof Memo;
-
-
-    @Expose({ name: 'Heading' })
-    @Transform(
-        (value: any, obj: any) =>
-            transformValue(String, 'heading', value, obj, []),
-        {
-            toClassOnly: true,
-        }
-    )
-    heading?: Optional<string>;
-    @Expose({ name: 'Body' })
-    @Transform(
-        (value: any, obj: any) =>
-            transformValue(String, 'body', value, obj, []),
-        {
-            toClassOnly: true,
-        }
-    )
-    body?: Optional<string>;
-
-}
-
-export class Tag extends BaseModel {
-    ['constructor']: typeof Tag;
-
-
-    @Expose({ name: 'Key' })
-    @Transform(
-        (value: any, obj: any) =>
-            transformValue(String, 'key', value, obj, []),
-        {
-            toClassOnly: true,
-        }
-    )
-    key?: Optional<string>;
-    @Expose({ name: 'Value' })
-    @Transform(
-        (value: any, obj: any) =>
-            transformValue(String, 'value_', value, obj, []),
-        {
-            toClassOnly: true,
-        }
-    )
-    value_?: Optional<string>;
-
 }
 
