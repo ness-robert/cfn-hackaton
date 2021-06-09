@@ -1,0 +1,30 @@
+{
+    "credentials": {
+        "accessKeyId": "",
+        "secretAccessKey": "",
+        "sessionToken": ""
+    },
+    "action": "UPDATE",
+    "request": {
+        "clientRequestToken": "4b90a7e4-b790-456b-a937-0cfdfa211dfe",
+        "desiredResourceState": {
+            "Id": "{<MY_WEBHOOK_UUID_HERE>}",
+            "ServiceUsername": "<MY_SERVICE_USERNAME_HERE>",
+            "ServiceAppPassword": "<MY_SERVICE_APP_PASSWORD_HERE>",
+            "Workspace": "<MY_WORKSPACE_HERE>",
+            "Repository": "<MY_REPOSITORY_HERE>",
+            "WebhookUrl": "<MY_NEW_WEBHOOK_URL_HERE>"
+        },
+        "previousResourceState": {
+            "ServiceUsername": "<MY_SERVICE_USERNAME_HERE>",
+            "ServiceAppPassword": "<MY_SERVICE_APP_PASSWORD_HERE>",
+            "Workspace": "<MY_WORKSPACE_HERE>",
+            "Repository": "<MY_REPOSITORY_HERE>",
+            "WebhookUrl": "<MY_OLD_WEBHOOK_URL_HERE>"
+        },
+        "logicalResourceIdentifier": "MyResource"
+    },
+    "callbackContext": null,
+    "awsAccountId": "123456789012",
+    "region": "eu-west-1"
+}

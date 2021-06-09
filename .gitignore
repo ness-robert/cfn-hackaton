@@ -13,6 +13,3 @@ rpdk.log*
 # Node.js
 node_modules/
 coverage/
-
-# contains credentials
-sam-tests/
