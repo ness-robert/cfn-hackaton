@@ -1,39 +1,46 @@
 # Robert::WebhookConfig::Repository
 
-Congratulations on starting development! Next steps:
+The project is a repository that contains an implementation of an AWS Cloudformation resource type.
 
-1. Write the JSON schema describing your resource, [robert-webhookconfig-repository.json](./robert-webhookconfig-repository.json)
-2. Implement your resource handlers in [handlers.ts](./robert-webhookconfig-repository/handlers.ts)
+# Overview
 
-> Don't modify [models.ts](./robert-webhookconfig-repository/models.ts) by hand, any modifications will be overwritten when the `generate` or `package` commands are run.
+This Cloudformation resource type is used to configure the webhook url for your Bitbucket repository in order for your AWS resources to respond to pull requests and push events.
 
-Implement CloudFormation resource here. Each function must always return a ProgressEvent.
+By using this type of configuration approach you will be able to manage the lifecycle of the webhook in the same place where you manage the CI/CD infrastructure.
 
-```typescript
-const progress = ProgressEvent.builder<ProgressEvent<ResourceModel>>()
+# Getting Started
 
-    // Required
-    // Must be one of OperationStatus.InProgress, OperationStatus.Failed, OperationStatus.Success
-    .status(OperationStatus.InProgress)
-    // Required on SUCCESS (except for LIST where resourceModels is required)
-    // The current resource model after the operation; instance of ResourceModel class
-    .resourceModel(model)
-    .resourceModels(null)
-    // Required on FAILED
-    // Customer-facing message, displayed in e.g. CloudFormation stack events
-    .message('')
-    // Required on FAILED a HandlerErrorCode
-    .errorCode(HandlerErrorCode.InternalFailure)
-    // Optional
-    // Use to store any state between re-invocation via IN_PROGRESS
-    .callbackContext({})
-    // Required on IN_PROGRESS
-    // The number of seconds to delay before re-invocation
-    .callbackDelaySeconds(0)
+## Step 0: Prerequisites
+- An [AWS account](https://aws.amazon.com/)
+- A [Bitbucket account](https://bitbucket.org/product/)
+- The [AWS CLI](https://aws.amazon.com/cli/) installed and configured on your system
+## Step 1: Bitbucket setup
+- [Enable MFA](https://support.atlassian.com/bitbucket-cloud/docs/enable-two-step-verification/)
+- [Generate an app password](https://support.atlassian.com/bitbucket-cloud/docs/app-passwords/) with the following permissions:
+    - Pull requests: Read and write
+    - Repositories: Read and write
+    - Webhooks: Read and write
+- [Create a workspace](https://support.atlassian.com/bitbucket-cloud/docs/create-your-workspace/) or choose one that you already have
+- [Create a repository](https://support.atlassian.com/bitbucket-cloud/docs/create-a-git-repository/) in the chosen workspace or chose an existent one
 
-    .build()
-```
+## Step 2: Create the resource
+    (env)$ aws cloudformation create-stack \
+    --template-body file://deployment/example.yml \
+    --stack-name my-webhook-config \
+    --parameters ParameterKey=ServiceUsername,ParameterValue=<MY_SERVICE_USERNAME> \
+                ParameterKey=ServiceAppPassword,ParameterValue=<MY_SERVICE_APP_PASSWORD> \
+                ParameterKey=Workspace,ParameterValue=<MY_WORKSPACE> \
+                ParameterKey=Repository,ParameterValue=<MY_REPOSITORY> \
+                ParameterKey=WebhookUrl,ParameterValue=<MY_WEBHOOK_URL>
 
-While importing the [@amazon-web-services-cloudformation/cloudformation-cli-typescript-lib](https://github.com/eduardomourar/cloudformation-cli-typescript-plugin) library, failures can be passed back to CloudFormation by either raising an exception from `exceptions`, or setting the ProgressEvent's `status` to `OperationStatus.Failed` and `errorCode` to one of `HandlerErrorCode`. There is a static helper function, `ProgressEvent.failed`, for this common case.
-
-Keep in mind, during runtime all logs will be delivered to CloudWatch if you use the `log()` method from `LoggerProxy` class.
+## Step 3: Update the resource
+    (env)$ aws cloudformation update-stack \
+    --use-previous-template \
+    --stack-name my-webhook-config \
+    --parameters ParameterKey=ServiceUsername,ParameterValue=<MY_SERVICE_USERNAME> \
+                ParameterKey=ServiceAppPassword,ParameterValue=<MY_SERVICE_APP_PASSWORD> \
+                ParameterKey=Workspace,ParameterValue=<MY_WORKSPACE> \
+                ParameterKey=Repository,ParameterValue=<MY_REPOSITORY> \
+                ParameterKey=WebhookUrl,ParameterValue=<MY_NEW_WEBHOOK_URL>
+## Step 4: Delete the resource
+    (env)$ aws cloudformation delete-stack --stack-name my-webhook-config
