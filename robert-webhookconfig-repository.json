@@ -44,7 +44,6 @@
         "WebhookUrl"
     ],
     "createOnlyProperties": [
-        "/properties/Id"
     ],
     "readOnlyProperties": [
         "/properties/Id"
