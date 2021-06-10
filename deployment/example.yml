@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  ServiceUsername:
+    Description: Bitbucket service username.
+    Type: String
+    MinLength: 1
+
+  ServiceAppPassword:
+    Description: Bitbucket app password.
+    Type: String
+    MinLength: 1
+    NoEcho: true
+
+  Workspace:
+    Description: Bitbucket workspace slug in which the repository is located.
+    Type: String
+    MinLength: 1
+
+  Repository:
+    Description: Repository slug for which the webhook needs to be configured.
+    Type: String
+    MinLength: 1
+
+  WebhookUrl:
+    Description: The url to call when an event is triggered.
+    Type: String
+    AllowedPattern: ^https?://[^\\s/$.?#].[^\\s]*$
+
+Resources:
+  MyWebhookConfigurator:
+    Type: Robert::WebhookConfig::Repository
+    Properties:
+      ServiceUsername: !Ref ServiceUsername
+      ServiceAppPassword: !Ref ServiceAppPassword
+      Workspace: !Ref Workspace
+      Repository: !Ref Repository
+      WebhookUrl: !Ref WebhookUrl
+
+Outputs:
+  WebhookId:
+    Value: !GetAtt MyWebhookConfigurator.Id
