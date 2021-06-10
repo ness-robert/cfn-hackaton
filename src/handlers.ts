@@ -86,12 +86,21 @@ class Resource extends BaseResource<ResourceModel> {
         logger: LoggerProxy
     ): Promise<ProgressEvent<ResourceModel, CallbackContext>> {
         const model = new ResourceModel(request.desiredResourceState);
+        const { workspace, repository } = request.previousResourceState;
         const progress = ProgressEvent.progress<ProgressEvent<ResourceModel, CallbackContext>>(model);
         
         // Id is a read only property, which means that
         // it cannot be set during creation or update operations.
         if (model.id) {
             throw new exceptions.InvalidRequest('Read only property [Id] cannot be provided by the user.');
+        }
+
+        if (model.workspace !== workspace) {
+            throw new exceptions.NotUpdatable('Create only property [Workspace] cannot be updated.');
+        }
+
+        if (model.repository !== repository) {
+            throw new exceptions.NotUpdatable('Create only property [Repository] cannot be updated.');
         }
 
         try {

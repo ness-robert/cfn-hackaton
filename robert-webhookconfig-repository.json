@@ -44,6 +44,8 @@
         "WebhookUrl"
     ],
     "createOnlyProperties": [
+        "/properties/Repository",
+        "/properties/Workspace"
     ],
     "readOnlyProperties": [
         "/properties/Id"
